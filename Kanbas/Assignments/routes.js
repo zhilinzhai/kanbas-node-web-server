@@ -1,12 +1,11 @@
-import assignments from "../Database/assignments.js";
 import db from "../Database/index.js";
 export default function AssignmentRoutes(app) {
 
 app.post("/api/courses/:cid/assignments", (req, res) => {
-    const { aid } = req.params;
+    const { cid } = req.params;
     const newAssignment = {
       ...req.body,
-      course: aid,
+      course: cid,
       _id: new Date().getTime().toString(),
     };
     db.assignments.push(newAssignment);
@@ -20,8 +19,8 @@ app.post("/api/courses/:cid/assignments", (req, res) => {
   });
 
   app.get("/api/courses/:cid/assignments", (req, res) => {
-    const { aid } = req.params;  // Get the course ID from the URL path parameter
-    const assignments = db.assignments.filter(assignment => module.assignments === aid);  // Filter modules by course ID
+    const { cid } = req.params;  // Get the course ID from the URL path parameter
+    const assignments = db.assignments.filter(assignment => assignment.course === cid);  // Filter modules by course ID
     res.send(assignments);  // Respond with the filtered modules
 });
 
@@ -34,10 +33,6 @@ app.put("/api/assignments/:aid", (req, res) => {
       ...db.assignments[assignmentIndex],
       ...req.body
     };
-    console.log(db.assignments[assignmentndex] )
     res.sendStatus(204);
   });
-
-
-
 }
